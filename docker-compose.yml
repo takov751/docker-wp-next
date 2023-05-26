@@ -1,7 +1,7 @@
 version: "3.6"
 services:
   nginx:
-    image: nginx:latest
+    image: nginx:stable-alpine
     container_name: ${APP_NAME}-nginx
     ports:
       - "80:80"
@@ -11,14 +11,14 @@ services:
       - ./bedrock:/var/www/html:rw,cached
       - ./certs:/etc/certs
     environment:
-      - "NGINX_ENVSUBST_TEMPLATE_SUFFIX=.conf"
+      - "NGINX_ENVSUBST_TEMPLATE_SUFFIX=.template"
       - "DOMAIN=${DOMAIN}"
     depends_on:
-      - wordpress
+      - php
     restart: always
 
   mysql:
-    image: mariadb:10.7
+    image: mariadb:lts
     container_name: ${APP_NAME}-mysql
     command: --lower_case_table_names=2
     volumes:
@@ -30,11 +30,11 @@ services:
     ports:
       - "3306:3306"
 
-  wordpress:
+  php:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: ${APP_NAME}-wordpress
+      dockerfile: php.dockerfile
+    container_name: ${APP_NAME}-php
     volumes:
       - ./bedrock:/var/www/html:rw,cached
       - ./config/php.ini:/usr/local/etc/php/conf.d/php.ini

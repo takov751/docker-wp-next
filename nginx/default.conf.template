@@ -55,7 +55,7 @@ server {
         fastcgi_connect_timeout 60;
         fastcgi_read_timeout 300;
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        fastcgi_pass wordpress:9000;
+        fastcgi_pass php:9000;
         fastcgi_index index.php;
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
