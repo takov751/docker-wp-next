@@ -8,7 +8,7 @@ services:
       - "443:443"
     volumes:
       - "./nginx/:/etc/nginx/templates/"
-      - ./bedrock:/var/www/html:rw,cached
+      - ./bedrock:/var/www/html
       - ./certs:/etc/certs
     environment:
       - "NGINX_ENVSUBST_TEMPLATE_SUFFIX=.template"
@@ -33,11 +33,11 @@ services:
   php:
     build:
       context: .
-      dockerfile: php.dockerfile
+      dockerfile: php/php.dockerfile
     container_name: ${APP_NAME}-php
     volumes:
-      - ./bedrock:/var/www/html:rw,cached
-      - ./config/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./bedrock:/var/www/html
+      - ./php/php.ini:/usr/local/etc/php/conf.d/php.ini
     depends_on:
       - mysql
     restart: always
@@ -46,7 +46,7 @@ services:
     image: phpmyadmin/phpmyadmin
     container_name: ${APP_NAME}-phpmyadmin
     volumes:
-      - ./config/phpmyadmin.ini:/usr/local/etc/php/conf.d/phpmyadmin.ini
+      - ./php/phpmyadmin.ini:/usr/local/etc/php/conf.d/phpmyadmin.ini
     environment:
       PMA_HOST: "${DB_HOST}"
       PMA_PORT: 3306
@@ -68,5 +68,6 @@ services:
     container_name: ${APP_NAME}-composer
     working_dir: /var/www/html
     restart: "no"
+    command: composer install --ignore-platform-reqs
     volumes:
-      - ./bedrock:/var/www/html:rw,cached
+      - ./bedrock:/var/www/html

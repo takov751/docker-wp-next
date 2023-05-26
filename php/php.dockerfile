@@ -4,6 +4,8 @@ FROM php:8.1-fpm
 RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
+    git \
+    unzip \
     # Ghostscript is required for rendering PDF previews
     ghostscript \
     ; \
@@ -87,5 +89,12 @@ RUN mkdir -p /var/www/.wp-cli/cache && chown www-data:www-data /var/www/.wp-cli/
 RUN curl --location --output /usr/local/bin/mhsendmail https://github.com/mailhog/mhsendmail/releases/download/v0.2.0/mhsendmail_linux_amd64 && \
     chmod +x /usr/local/bin/mhsendmail
 RUN echo 'sendmail_path="/usr/local/bin/mhsendmail --smtp-addr=mailhog:1025 --from=no-reply@gbp.lo"' > /usr/local/etc/php/conf.d/mailhog.ini
+
+# Allow Composer to be run as root
+# ENV COMPOSER_ALLOW_SUPERUSER 1
+
+# COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+# COPY bedrock/composer.json bedrock/composer.lock ./
+# RUN composer install --no-scripts --no-autoloader
 
 # Note: Use docker-compose up -d --force-recreate --build when Dockerfile has changed.
