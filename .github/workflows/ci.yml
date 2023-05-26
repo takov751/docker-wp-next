@@ -10,7 +10,7 @@ jobs:
       uses: actions/checkout@v1
 
     - name: Run composer install
-      working-directory: src
+      working-directory: bedrock
       run: |
         composer install --prefer-dist
 

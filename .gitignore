@@ -1,14 +1,14 @@
 # Application
-src/web/app/plugins/*
-!src/web/app/plugins/.gitkeep
-src/web/app/mu-plugins/*/
-src/web/app/upgrade
-src/web/app/uploads/*
-!src/web/app/uploads/.gitkeep
+bedrock/web/app/plugins/*
+!bedrock/web/app/plugins/.gitkeep
+bedrock/web/app/mu-plugins/*/
+bedrock/web/app/upgrade
+bedrock/web/app/uploads/*
+!bedrock/web/app/uploads/.gitkeep
 
 # WordPress
-src/web/wp
-src/web/.htaccess
+bedrock/web/wp
+bedrock/web/.htaccess
 
 # WP-CLI
 db-sync
@@ -20,8 +20,8 @@ sql-dump-*.sql
 !.env.example
 
 # Vendor (e.g. Composer)
-src/vendor/*
-!src/vendor/.gitkeep
+bedrock/vendor/*
+!bedrock/vendor/.gitkeep
 
 # Database volume
 data
