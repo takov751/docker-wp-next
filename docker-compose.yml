@@ -7,12 +7,12 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - "./nginx/:/etc/nginx/templates/"
+      - "./nginx/default.conf.template:/etc/nginx/templates/default.conf.template"
       - ./bedrock:/var/www/html
-      - ./certs:/etc/certs
+      - ./nginx/certs:/etc/certs
     environment:
-      - "NGINX_ENVSUBST_TEMPLATE_SUFFIX=.template"
-      - "DOMAIN=${DOMAIN}"
+      NGINX_ENVSUBST_TEMPLATE_SUFFIX: .template
+      DOMAIN: ${DOMAIN}
     depends_on:
       - php
     restart: always
@@ -24,8 +24,8 @@ services:
     volumes:
       - "./data/db:/var/lib/mysql:delegated"
     environment:
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
     restart: always
     ports:
       - "3306:3306"
