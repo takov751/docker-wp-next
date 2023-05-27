@@ -17,6 +17,7 @@ services:
       APP_DOMAIN: ${APP_DOMAIN}
     depends_on:
       - php
+      - nextjs
     restart: always
 
   mysql:
@@ -59,20 +60,6 @@ services:
       SECURE_AUTH_SALT: ${SECURE_AUTH_SALT}
       LOGGED_IN_SALT: ${LOGGED_IN_SALT}
       NONCE_SALT: ${NONCE_SALT}
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: ${APP_NAME}-phpmyadmin
-    volumes:
-      - ./php/phpmyadmin.ini:/usr/local/etc/php/conf.d/phpmyadmin.ini
-    environment:
-      PMA_HOST: "${DB_HOST}"
-      PMA_PORT: 3306
-      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
-    ports:
-      - "8082:80"
-    links:
-      - mysql:mysql
 
   mailhog:
     container_name: ${APP_NAME}-mailhog
