@@ -33,7 +33,7 @@ services:
   php:
     build:
       context: .
-      dockerfile: php/php.dockerfile
+      dockerfile: php/Dockerfile
     container_name: ${APP_NAME}-php
     volumes:
       - ./bedrock:/var/www/html
@@ -71,3 +71,18 @@ services:
     command: composer install --ignore-platform-reqs
     volumes:
       - ./bedrock:/var/www/html
+
+  nextjs:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: ${APP_NAME}-nextjs
+    # volumes:
+    #   - ./app:/app
+    ports:
+      - "3000:3000"
+    restart: always
+    depends_on:
+      - php
+      - nginx
+      - mysql
