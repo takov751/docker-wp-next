@@ -6,9 +6,18 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Install dependencies based on the preferred package manager
+# Copy package.json and package-lock.json
 COPY package*.json ./
+
+# Use Docker build secret to pass in NPM_RC
+ARG NPM_RC
+RUN echo "$NPM_RC" > .npmrc
+
+# Clean install
 RUN npm ci
+
+# Remove build secret from image
+RUN rm .npmrc
 
 # Rebuild the source code only when needed
 FROM base AS builder

@@ -92,6 +92,8 @@ services:
     build:
       context: ./app
       dockerfile: Dockerfile
+      args:
+        NPM_RC: ${NPM_RC}
     container_name: ${APP_NAME}-nextjs
     # volumes:
     #   - ./app:/app
