@@ -2,12 +2,17 @@
 
 set -e
 
-source "../.env"
+# root directory
+cd "$(dirname "$0")/.."
 
-DOMAIN=$(echo "$DOMAIN")
+# load environment variables
+source .env
+
+# create directory for certificates
+mkdir -p certs
 
 mkcert -install "${DOMAIN}"
 
-mkdir -p ../certs
-
-find . -type f -name "*.pem" -exec mv {} ../certs \;
+# Move the generated certificate and key to the certs directory
+mv "${DOMAIN}.pem" certs/
+mv "${DOMAIN}-key.pem" certs/
