@@ -8,11 +8,13 @@ services:
       - "443:443"
     volumes:
       - "./nginx/default.conf.template:/etc/nginx/templates/default.conf.template"
-      - ./bedrock:/var/www/html
+      - ./cms:/var/www/html/cms
+      - ./app:/var/www/html/app
       - ./nginx/certs:/etc/certs
     environment:
       NGINX_ENVSUBST_TEMPLATE_SUFFIX: .template
-      DOMAIN: ${DOMAIN}
+      CMS_DOMAIN: ${CMS_DOMAIN}
+      APP_DOMAIN: ${APP_DOMAIN}
     depends_on:
       - php
     restart: always
@@ -36,7 +38,7 @@ services:
       dockerfile: php/Dockerfile
     container_name: ${APP_NAME}-php
     volumes:
-      - ./bedrock:/var/www/html
+      - ./cms:/var/www/html/cms
       - ./php/php.ini:/usr/local/etc/php/conf.d/php.ini
     depends_on:
       - mysql
@@ -82,11 +84,11 @@ services:
   composer:
     image: composer
     container_name: ${APP_NAME}-composer
-    working_dir: /var/www/html
+    working_dir: /var/www/html/cms
     restart: "no"
     command: composer install --ignore-platform-reqs
     volumes:
-      - ./bedrock:/var/www/html
+      - ./cms:/var/www/html/cms
 
   nextjs:
     build:

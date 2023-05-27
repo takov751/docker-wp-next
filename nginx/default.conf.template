@@ -1,15 +1,15 @@
 server {
     listen      80;
-    server_name ${DOMAIN};
+    server_name ${CMS_DOMAIN};
     return 301 https://$host$request_uri;
 }
 
 server {
     listen      443           ssl http2;
-    server_name               ${DOMAIN} www.${DOMAIN};
+    server_name               ${CMS_DOMAIN} www.${CMS_DOMAIN};
 
-    ssl_certificate           /etc/certs/${DOMAIN}.pem;
-    ssl_certificate_key       /etc/certs/${DOMAIN}-key.pem;
+    ssl_certificate           /etc/certs/${CMS_DOMAIN}.pem;
+    ssl_certificate_key       /etc/certs/${CMS_DOMAIN}-key.pem;
 
     add_header                Strict-Transport-Security "max-age=31536000" always;
 
@@ -20,7 +20,7 @@ server {
     ssl_prefer_server_ciphers on;
     ssl_ciphers               "ECDH+AESGCM:ECDH+AES256:ECDH+AES128:!ADH:!AECDH:!MD5;";
 
-    root /var/www/html/web;
+    root /var/www/html/cms/web;
     index index.php;
 
     access_log /var/log/nginx/access.log;
@@ -63,17 +63,17 @@ server {
     }
 
     location ~ /\.ht {
-            deny all;
+        deny all;
     }
 
     location = /favicon.ico {
-            log_not_found off; access_log off;
+        log_not_found off; access_log off;
     }
     location = /robots.txt {
-            log_not_found off; access_log off; allow all;
+        log_not_found off; access_log off; allow all;
     }
     location ~* \.(css|gif|ico|jpeg|jpg|js|png)$ {
-            expires max;
-            log_not_found off;
+        expires max;
+        log_not_found off;
     }
 }
