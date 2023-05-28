@@ -1,13 +1,13 @@
-version: "3.6"
+version: "3.9"
 services:
   nginx:
-    image: nginx:stable-alpine
     container_name: ${APP_NAME}-nginx
+    image: nginx:stable-alpine
     ports:
-      - "80:80"
-      - "443:443"
+      - 80:80
+      - 443:443
     volumes:
-      - "./nginx/default.conf.template:/etc/nginx/templates/default.conf.template"
+      - ./nginx/default.conf.template:/etc/nginx/templates/default.conf.template
       - ./cms:/var/www/html/cms
       - ./app:/var/www/html/app
       - ./nginx/certs:/etc/certs
@@ -19,25 +19,29 @@ services:
       - php
       - nextjs
     restart: always
+    networks:
+      - default
 
   mysql:
-    image: mariadb:lts
     container_name: ${APP_NAME}-mysql
+    image: mariadb:lts
     command: --lower_case_table_names=2
     volumes:
-      - "./data/db:/var/lib/mysql:delegated"
+      - ./data/db:/var/lib/mysql:delegated
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
     restart: always
     ports:
-      - "3306:3306"
+      - 3306:3306
+    networks:
+      - default
 
   php:
+    container_name: ${APP_NAME}-php
     build:
       context: .
       dockerfile: php/Dockerfile
-    container_name: ${APP_NAME}-php
     volumes:
       - ./cms:/var/www/html/cms
       - ./php/php.ini:/usr/local/etc/php/conf.d/php.ini
@@ -60,36 +64,67 @@ services:
       SECURE_AUTH_SALT: ${SECURE_AUTH_SALT}
       LOGGED_IN_SALT: ${LOGGED_IN_SALT}
       NONCE_SALT: ${NONCE_SALT}
+    networks:
+      - default
 
   mailhog:
     container_name: ${APP_NAME}-mailhog
     image: mailhog/mailhog
     ports:
-      - "8025:8025"
-      - "1025:1025"
+      - 8025:8025
+      - 1025:1025
+    networks:
+      - default
 
   composer:
-    image: composer
     container_name: ${APP_NAME}-composer
+    image: composer
     working_dir: /var/www/html/cms
+    # https://github.com/compose-spec/compose-spec/blob/master/spec.md#restart
     restart: "no"
     command: composer install --ignore-platform-reqs
     volumes:
       - ./cms:/var/www/html/cms
 
+  # Development
   nextjs:
+    container_name: ${APP_NAME}-nextjs
     build:
       context: ./app
-      dockerfile: Dockerfile
+      dockerfile: development.Dockerfile
       args:
         NPM_RC: ${NPM_RC}
-    container_name: ${APP_NAME}-nextjs
-    # volumes:
-    #   - ./app:/app
+    # environment:
+    #   ENV_VARIABLE: ${ENV_VARIABLE}
+    #   NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+    volumes:
+      - ./app:/app
+      - /app/node_modules # Next.js example doesn't use this, but it doesn't work for me without
     ports:
       - "3000:3000"
     restart: always
-    depends_on:
-      - php
-      - nginx
-      - mysql
+    networks:
+      - default
+
+  # Production - TODO, build into one Dockerfile
+  # nextjs:
+  #   container_name: ${APP_NAME}-nextjs
+  #   build:
+  #     context: ./app
+  #     dockerfile: production.Dockerfile
+  #     args:
+  #       NPM_RC: ${NPM_RC}
+  #     # ENV_VARIABLE: ${ENV_VARIABLE}
+  #     # NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+  #   ports:
+  #     - "3000:3000"
+  #   restart: always
+  #   networks:
+  #     - default
+
+# Define a network, which allows containers to communicate
+# with each other, by using their container name as a hostname
+networks:
+  default:
+    name: ${APP_NAME}-network
+    external: true
