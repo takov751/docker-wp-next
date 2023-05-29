@@ -16,8 +16,8 @@ services:
       CMS_DOMAIN: ${CMS_DOMAIN}
       APP_DOMAIN: ${APP_DOMAIN}
     depends_on:
-      - php
-      - nextjs
+      - cms
+      - app
     restart: always
     networks:
       - default
@@ -36,14 +36,14 @@ services:
     networks:
       - default
 
-  php:
-    container_name: ${APP_NAME}-php
+  cms:
+    container_name: ${APP_NAME}-cms
     build:
       context: .
-      dockerfile: php/Dockerfile
+      dockerfile: cms/Dockerfile
     volumes:
       - ./cms:/var/www/html/cms
-      - ./php/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./cms/php.ini:/usr/local/etc/php/conf.d/php.ini
     depends_on:
       - mysql
     restart: always
@@ -83,8 +83,8 @@ services:
       - ./cms:/var/www/html/cms
 
   # Development
-  nextjs:
-    container_name: ${APP_NAME}-nextjs
+  app:
+    container_name: ${APP_NAME}-app
     build:
       context: ./app
       dockerfile: development.Dockerfile
@@ -103,8 +103,8 @@ services:
       - default
 
   # Production - TODO, build into one Dockerfile
-  # nextjs:
-  #   container_name: ${APP_NAME}-nextjs
+  # app:
+  #   container_name: ${APP_NAME}-app
   #   build:
   #     context: ./app
   #     dockerfile: production.Dockerfile
