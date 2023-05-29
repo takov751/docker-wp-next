@@ -1,3 +1,7 @@
-path: web/wp
-server:
-  docroot: web
+"@development":
+  ssh: "docker-compose:web@cms:/var/www/html/cms/web/wp"
+"@staging":
+  ssh: "webandroll@35.189.113.87:22/home/webandroll/public_html/paul-turner.webandroll.net"
+"@both":
+  - "@development"
+  - "@staging"

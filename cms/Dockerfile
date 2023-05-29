@@ -90,4 +90,16 @@ RUN curl --location --output /usr/local/bin/mhsendmail https://github.com/mailho
     chmod +x /usr/local/bin/mhsendmail
 RUN echo 'sendmail_path="/usr/local/bin/mhsendmail --smtp-addr=mailhog:1025 --from=no-reply@gbp.lo"' > /usr/local/etc/php/conf.d/mailhog.ini
 
+# Create a new user named "web" with home directory "/var/www"
+RUN useradd -m -d /var/www web
+
+# Set the ownership of the "/var/www/html" directory to "web:www-data" (note that this doesn't effect Docker volumes but does all the user to write to the directory & subsequently allows wp-cli)
+RUN chown -R web:www-data /var/www/html
+
+# Set the user to "web" for subsequent commands
+USER web
+
+# Set restrictive file permissions for the "/var/www/html" directory
+RUN find /var/www/html -type f -exec chmod 640 {} \;
+
 # Note: Use docker-compose up -d --force-recreate --build when Dockerfile has changed.

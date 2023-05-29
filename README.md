@@ -61,6 +61,7 @@ docker-compose  up
 - Add NGINX config for app
 - Automatically write to hosts file when starting and remove entry when stopping
 - Automatically generate certs in development with mkcert rather than manually having to do it
+- Make wp-cli.yml and /bin/sync.sh work
 
 ## WP Commands
 
@@ -70,13 +71,13 @@ docker-compose  up
 docker-compose run composer update
 ```
 
-#### Use WP-CLI
+#### Login to the container
 
 ```shell
 docker exec -it paul-turner-cms bash
 ```
 
-#### Login to the container
+#### Use WP-CLI
 
 ```shell
 wp search-replace https://example.test https://example.com --allow-root
