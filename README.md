@@ -52,6 +52,8 @@ docker-compose  up
 - Compared to the urre/wordpress example, I've adjusted quite a few things but a couple of things worth noting are:
   - The script that generates the certs
   - Using root env rather than within Bedrock
+  - Look at PM2 to auto-restart the NextJS app in production - https://steveholgado.com/nginx-for-nextjs/
+  - Look at nginx conf, see if it's ok for production, and document what each bit does. I adjusted the one from the urre repo to add an upstream for the NextJS app
 
 ## TODO
 
@@ -71,7 +73,7 @@ docker-compose run composer update
 #### Use WP-CLI
 
 ```shell
-docker exec -it myapp-wordpress bash
+docker exec -it paul-turner-cms bash
 ```
 
 #### Login to the container
