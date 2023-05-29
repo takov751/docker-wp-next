@@ -30,7 +30,6 @@ services:
       - ./data/db:/var/lib/mysql:delegated
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
     restart: always
     ports:
       - 3306:3306
@@ -49,10 +48,7 @@ services:
       - mysql
     restart: always
     environment:
-      DB_HOST: ${DB_HOST}
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
+      DATABASE_URL: ${DATABASE_URL}
       WP_ENV: ${WP_ENV}
       WP_HOME: ${WP_HOME}
       WP_SITEURL: ${WP_SITEURL}
