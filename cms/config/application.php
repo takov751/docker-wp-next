@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Your base production configuration goes in this file. Environment-specific
  * overrides go in their respective config/environments/{{WP_ENV}}.php file.
@@ -128,6 +129,17 @@ Config::define('WP_DEBUG_DISPLAY', false);
 Config::define('WP_DEBUG_LOG', false);
 Config::define('SCRIPT_DEBUG', false);
 ini_set('display_errors', '0');
+
+/**
+ * Custom settings
+ */
+Config::define('GRAPHQL_JWT_AUTH_SECRET_KEY', env('GRAPHQL_JWT_AUTH_SECRET_KEY'));
+Config::define('HEADLESS_MODE_CLIENT_URL', env('HEADLESS_MODE_CLIENT_URL'));
+Config::define('VERCEL_TEAM_ID', env('VERCEL_TEAM_ID'));
+Config::define('VERCEL_PROJECT_ID', env('VERCEL_PROJECT_ID'));
+Config::define('VERCEL_API_TOKEN', env('VERCEL_API_TOKEN'));
+Config::define('GITHUB_REPO_ID', env('GITHUB_REPO_ID'));
+Config::define('ISR_REVALIDATE_SECRET', env('ISR_REVALIDATE_SECRET'));
 
 /**
  * Allow WordPress to detect HTTPS when used behind a reverse proxy or a load balancer

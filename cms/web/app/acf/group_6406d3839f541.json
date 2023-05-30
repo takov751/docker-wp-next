@@ -1,0 +1,48 @@
+{
+    "key": "group_6406d3839f541",
+    "title": "Subitem slideshows",
+    "fields": [
+        {
+            "key": "field_6406d3a4907c2",
+            "label": "Subitem slideshows",
+            "name": "subitem_slideshows",
+            "type": "true_false",
+            "instructions": "By default, we'll use dropdown's for subitems in menus. Tick here to use a slideshow of images and short descriptions. We will get the images and short descriptions from each page.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "show_in_graphql": 1,
+            "message": "",
+            "default_value": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "nav_menu",
+                "operator": "==",
+                "value": "all"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_graphql": 1,
+    "graphql_field_name": "subitemSlideshows",
+    "map_graphql_types_from_location_rules": 0,
+    "graphql_types": "",
+    "modified": 1685407899
+}
