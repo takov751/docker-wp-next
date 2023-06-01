@@ -36,10 +36,6 @@
         "wpackagist-plugin/*",
         "wpackagist-theme/*"
       ]
-    },
-    {
-      "type": "vcs",
-      "url": "https://github.com/tablufc88/advanced-custom-fields-pro.git"
     }
   ],
   "require": {
@@ -53,7 +49,6 @@
     "roots/wp-config": "1.0.0",
     "roots/wp-password-bcrypt": "1.1.0",
     "wpackagist-theme/twentytwentythree": "^1.0",
-    "tablufc88/advanced-custom-fields-pro": "*",
     "wpackagist-plugin/wp-graphql": "^1.14",
     "wpackagist-theme/intentionally-blank": "^3.0",
     "wp-graphql/wp-graphql-acf": "^0.6.1",
@@ -82,7 +77,6 @@
     "installer-paths": {
       "web/app/mu-plugins/{$name}/": [
         "type:wordpress-muplugin",
-        "tablufc88/advanced-custom-fields-pro",
         "wpackagist-plugin/wp-graphql",
         "wp-graphql/wp-graphql-acf",
         "wp-graphql/wp-graphql-jwt-authentication",
