@@ -19,8 +19,13 @@ services:
       - cms
       - app
     restart: always
+# Define aliases on network, which is the same as having DNS records inside docker network
+# So that nodejs can connect to valid endpoint within docker network
     networks:
-      - default
+      default:
+        aliases:
+          - ${CMS_DOMAIN}
+          - ${APP_DOMAIN}
 
   mysql:
     container_name: ${APP_NAME}-mysql
@@ -30,6 +35,10 @@ services:
       - ./data/db:/var/lib/mysql:delegated
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      # define sql database and corresponding user
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     restart: always
     ports:
       # Development (Already got MySQL running on 3306 so use 3356:3306)
@@ -143,7 +152,9 @@ services:
 
 # Define a network, which allows containers to communicate
 # with each other, by using their container name as a hostname
+# Additionally name the network interface as well to the same name
 networks:
   default:
     name: ${APP_NAME}-network
-    external: true
+    driver_opts:
+      com.docker.network.bridge.name: ${APP_NAME}-network
